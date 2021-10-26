@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ld.dao.WorkerDao">
+    <sql id="ADDCOLUMN">
+        ID,PASSWORD,NAME,GENDER,AGE
+    </sql>
+    <sql id="SEARCHCOLUMN">
+        ID,PASSWORD,NAME,GENDER,AGE
+    </sql>
+    <insert id="addWorker" parameterType="Worker">
+        insert into LD_WORKER (<include refid="ADDCOLUMN"></include>)
+        value (#{id},#{password},#{name},#{gender},#{age})
+    </insert>
+    <update id="modifyByExample">
+        update LD_WORKER
+        <set>
+            <if test="name !=null">name=#{name},</if>
+            <if test="gender !=null">gender = #{gender},</if>
+            <if test="age !=null">age = #{age},</if>
+        </set>
+        where id=#{id}
+    </update>
+    <delete id="deleteById">
+        delete
+        from LD_WORKER
+        where id=#{id}
+    </delete>
+    <select id="queryAll" resultType="Worker">
+        select
+        <include refid="SEARCHCOLUMN"></include>
+        FROM LD_WORKER
+    </select>
+    <select id="queryByExample" resultType="Worker" parameterType="Worker">
+        SELECT
+        <include refid="SEARCHCOLUMN"></include>
+        FROM LD_WORKER
+        <where>
+            <if test="id != null">AND id=#{id}</if>
+            <if test="name != null">AND name like concat('%',#{name} , '%')</if>
+            <if test="gender != null">AND gender = #{gender}</if>
+            <if test="age != null">AND age = #{age}</if>
+        </where>
+    </select>
+</mapper>

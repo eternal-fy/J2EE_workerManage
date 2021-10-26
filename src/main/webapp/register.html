@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="font/iconfont.css">
+    <link rel="stylesheet" type="text/css" href="css/welcome.css">
+    <script src="webjars/jquery/3.1.1/jquery.min.js"></script>
+    <style>
+        .background {
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-image: url("pic/universeWelcome.png");
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: auto;
+        }
+
+        .registerContain {
+            text-align: center;
+            border: 2px black solid;
+            padding: 10px 10px;
+            margin: 200px auto;
+            width: 350px;
+            height: 400px;
+            background-color: rgba(100, 100, 200, 0.7);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 10px #5bc0de;
+        }
+        .formContain{
+            margin: 20px auto;
+
+        }
+    </style>
+</head>
+<body>
+<div class="background">
+    <div class="registerContain">
+        <h1>注册</h1>
+        <div class="formContain">
+            <form onsubmit="return false;"  method="post">
+                <table>
+                    <tr><td>工号：</td><td><input id="id" type="text" name="id"></td></tr>
+                    <tr><td>密码：</td><td><input id="password" type="password" name="password"></td></tr>
+                    <tr><td>确认密码：</td><td><input id="repassword" type="password" name="repassword"></td></tr>
+                    <tr><td>姓名：</td><td><input id="name" type="text" name="name"></td></tr>
+                    <tr><td>性别：</td><td><input type="radio" name="gender" value="1" checked="checked">男</td><td><input type="radio" name="gender" value="0">女</td></tr>
+                    <tr><td>年龄：</td><td><input id="age" type="text" name="age"></td></tr>
+                </table>
+                <h2><input id="regist" type="submit" value="注册"></h2>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        $("#regist").click(function () {
+            let workerId=$("#id").val();
+            let password=$("#password").val();
+            let repassword=$("#repassword").val();
+            let name=$("#name").val();
+            let gender=$("input[name='gender']:checked").val();
+            let age=$("#age").val();
+            if(workerId==""||password==""||repassword==""||name==""||gender==""||age==""){
+                alert("请将信息填写完成！")
+                return ;
+            }
+            if(password!=repassword){
+                alert("两次密码输入的不一致")
+                return ;
+            }
+            $.ajax({
+                url: "/regist", success: function (result) {
+                    if(result=="success"){
+                        alert("注册成功")
+                         $(window).attr('location','/welcome.html')
+                    }else {
+                        alert("注册失败")
+                    }
+                },
+                data:{
+                    "id":workerId,
+                    "password":password,
+                    "name":name,
+                    "gender":gender,
+                    "age":age
+                }
+            })
+
+        })
+
+
+    })
+</script>
+</body>
+</html>
